@@ -34,9 +34,10 @@
       firebase.initializeApp(firebaseConfig);
     </script>
 
-    <div class='background'>
-        <div class='navBar'></div>
-        
+    <div class='background'></div>
+    <div class='navBar'></div>
+    
+    <div class='hCenter'>
         <div class="container loginCard vCenter">
             <img class='wavePosition' src="../assets/wavyDivider.svg"/>
 

@@ -35,40 +35,41 @@
     </script>
 
     <div class='background'></div>
-
     <div class='navBar'></div>
 
-    <div class="container loginCard vCenter">
-        <img class='wavePosition' src="../assets/wavyDivider.svg"/>
+    <div class='hCenter'>
+        <div class="container loginCard vCenter">
+            <img class='wavePosition' src="../assets/wavyDivider.svg"/>
 
-        <img class='lockIcon' src="../assets/verified_user.svg"/>
+            <img class='lockIcon' src="../assets/verified_user.svg"/>
 
-        <div class='loginFormContainer vCenter hCenter rightAlign'>
-            <form class='loginForm' onsubmit="signup(); return false;">
-                <p class='loginHeader'>Sign Up</p>
+            <div class='loginFormContainer vCenter hCenter rightAlign'>
+                <form class='loginForm' onsubmit="signup(); return false;">
+                    <p class='loginHeader'>Sign Up</p>
 
-                <div class="inputField vCenter" style="margin-top:50px">
-                    <div>
-                        <img src="../assets/email.svg"/>
-                        <input id="emailInput" style="margin-left:10px" type="email" placeholder="Enter email" oninvalid="this.setCustomValidity('Enter a valid email')" oninput="this.setCustomValidity('')" required/>
+                    <div class="inputField vCenter" style="margin-top:50px">
+                        <div>
+                            <img src="../assets/email.svg"/>
+                            <input id="emailInput" style="margin-left:10px" type="email" placeholder="Enter email" oninvalid="this.setCustomValidity('Enter a valid email')" oninput="this.setCustomValidity('')" required/>
+                        </div>
                     </div>
-                </div>
 
-                <div class="inputField vCenter" style="margin-top:10px">
-                    <div>
-                        <img src="../assets/lock.svg"/>
-                        <input id="passwordInput" style="margin-left:10px" type="password" placeholder="Enter password" oninvalid="this.setCustomValidity('Enter password')" oninput="this.setCustomValidity('')" required/>
+                    <div class="inputField vCenter" style="margin-top:10px">
+                        <div>
+                            <img src="../assets/lock.svg"/>
+                            <input id="passwordInput" style="margin-left:10px" type="password" placeholder="Enter password" oninvalid="this.setCustomValidity('Enter password')" oninput="this.setCustomValidity('')" required/>
+                        </div>
                     </div>
-                </div>
 
-                <div style="margin-top: 20px; height:15px">
-                    <p id='errorMsg' class='errorMsg' style='display:none'>Error message</p>
-                </div>
+                    <div style="margin-top: 20px; height:15px">
+                        <p id='errorMsg' class='errorMsg' style='display:none'>Error message</p>
+                    </div>
 
-                <div style="margin-top:20px; margin-left: 5%">
-                    <button class="loginBtn" type="submit">Sign Up</button>
-                </div>
-            </form>
+                    <div style="margin-top:20px; margin-left: 5%">
+                        <button class="loginBtn" type="submit">Sign Up</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>

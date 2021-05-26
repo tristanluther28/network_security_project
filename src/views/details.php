@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 
 <html>
-
+<?php
+    include_once '../assets/key.php';
+?>
 <head>
     <title>User Details</title>
 
@@ -123,7 +125,7 @@
                             width="900"
                             height="350"
                             frameborder="0" style="border:0"
-                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC6sAgEIocrdzH8NXBAOnftvETxlqzpSgE&q=<?php echo $ip_api['lat']." ".$ip_api['lon'] ?>" allowfullscreen>
+                            src="https://www.google.com/maps/embed/v1/place?key=<?php echo $GOOGLE_MAPS_API_KEY ?>&q=<?php echo $ip_api['lat']." ".$ip_api['lon'] ?>" allowfullscreen>
                         </iframe>
                     </div>
                 </div>

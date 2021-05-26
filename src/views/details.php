@@ -2,7 +2,27 @@
 
 <html>
 <?php
+    //Debugging statements
+    /*
+    error_reporting(-1);
+    ini_set('display_errors', 'On');
+    set_error_handler("var_dump");
+    */
+
     include_once '../assets/key.php';
+    require_once "../classes/Db.php";
+    require_once "../classes/Users.php";
+    session_start();
+    //Create a user object
+    $user = new Users();
+    //Get the db user id from the get request
+    if(isset($_GET['id'])){
+        //Escape the string
+        $id = $user->escape($_GET['id']);
+        //Get this user in the current session
+        $current_user = $user->select_id($id);
+        //Get the other logged sign-ins based on the uid
+        $other_user = $user->select_uid($current_user['uid_firebase']);
 ?>
 <head>
     <title>User Details</title>
@@ -40,47 +60,8 @@
     </script>
 
     <?php
-        //Function to determine the operating system of the user
-        $detail =  $_SERVER['HTTP_USER_AGENT'];
-        function os(){ 
-            global $detail;
-            $os1  = "Unknown";
-            $os_a =  array(
-                '/windows nt 10.0/i'     =>  'Windows 10',
-                '/windows nt 6.3/i'     =>  'Windows 8.1',
-                '/windows nt 6.2/i'     =>  'Windows 8',
-                '/windows nt 6.1/i'     =>  'Windows 7',
-                '/windows nt 6.0/i'     =>  'Windows Vista',
-                '/windows nt 5.2/i'     =>  'Windows Server 2003/XP x64',
-                '/windows nt 5.1/i'     =>  'Windows XP',
-                '/windows xp/i'         =>  'Windows XP',
-                '/windows nt 5.0/i'     =>  'Windows 2000',
-                '/windows me/i'         =>  'Windows ME',
-                '/win98/i'              =>  'Windows 98',
-                '/win95/i'              =>  'Windows 95',
-                '/win16/i'              =>  'Windows 3.11',
-                '/macintosh|mac os x/i' =>  'Mac OS X',
-                '/mac_powerpc/i'        =>  'Mac OS 9',
-                '/linux/i'              =>  'Linux',
-                '/ubuntu/i'             =>  'Ubuntu',
-                '/iphone/i'             =>  'iPhone iOS',
-                '/ipod/i'               =>  'iPod iOS',
-                '/ipad/i'               =>  'iPad iOS',
-                '/android/i'            =>  'Android',
-                '/blackberry/i'         =>  'BlackBerry OS',
-                '/webos/i'              =>  'Mobile'
-            );
-
-            foreach ($os_a as $key => $value){ 
-                if (preg_match($key, $detail )){
-                    $os1 = $value;
-                }
-            }   
-            return $os1;
-        }
-
-        //Grab current user information based on public IP Address
-        $url = 'http://ip-api.com/json/'.getenv("REMOTE_ADDR");
+        //Grab current user location information based on public IP Address
+        $url = 'http://ip-api.com/json/'.$current_user['ip'];
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTPGET, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -99,7 +80,7 @@
                 <div class="col-4">
                 </div>
                 <div class="col-4 text-center">
-                    <h2>Current IP: <span id="user-ip"><?php echo $ip_api['query'] ?></span></h2>
+                    <h2>Current IP: <span id="user-ip"><?php echo $current_user['ip'] ?></span></h2>
                 </div>
             </div>
             <div class="row">
@@ -110,11 +91,25 @@
                             <hr>
                             <ul>
                                 <!-- List all locations that are currently signed in -->
+                                <?php
+                                    foreach($other_user as $other_uid){
+                                        //Grab other user information based on public IP Address
+                                        $url = 'http://ip-api.com/json/'.$other_uid['ip'];
+                                        $ch = curl_init($url);
+                                        curl_setopt($ch, CURLOPT_HTTPGET, true);
+                                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                        $response_json = curl_exec($ch);
+                                        curl_close($ch);
+                                        $ip_api_other=json_decode($response_json, true);
+                                ?>
                                 <li>
-                                    <b>Locations</b>: <span id="user-city"><?php echo $ip_api['city'] ?></span>, <span id="user-state"><?php echo $ip_api['regionName'] ?></span> <span id="user-country"><?php echo $ip_api['country'] ?></span>
-                                    <br><b>Operating System</b>: <span id="user-os"><?php $os = os(); echo $os; ?></span>
-                                    <br><b>Time Zone</b>: <span id="user-tz"><?php echo $ip_api['timezone'] ?></span>
+                                    <b>Locations</b>: <span id="user-city"><?php echo $ip_api_other['city'] ?></span>, <span id="user-state"><?php echo $ip_api_other['regionName'] ?></span> <span id="user-country"><?php echo $ip_api_other['country'] ?></span>
+                                    <br><b>Operating System</b>: <span id="user-os"><?php echo $other_uid['os']; ?></span>
+                                    <br><b>Time Zone</b>: <span id="user-tz"><?php echo $other_uid['time_zone'] ?></span>
                                 </li>
+                                <?php
+                                    }
+                                ?>
                             </ul>
                         </div>
                     </div>
@@ -172,6 +167,10 @@
         </div>
     </div>
 </body>
-
-
+<?php
+    }
+    else{
+        http_response_code(404);
+    }
+?>
 </html>

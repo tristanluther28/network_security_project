@@ -1,5 +1,6 @@
 body{
     background: radial-gradient(#7E00FD 5%, #0C0314 50%);
+    height: 100%;
 }
 
 .login-btn{

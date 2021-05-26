@@ -104,7 +104,8 @@
                                 ?>
                                 <li>
                                     <b>Locations</b>: <span id="user-city"><?php echo $ip_api_other['city'] ?></span>, <span id="user-state"><?php echo $ip_api_other['regionName'] ?></span> <span id="user-country"><?php echo $ip_api_other['country'] ?></span>
-                                    <br><b>Operating System</b>: <span id="user-os"><?php echo $other_uid['os']; ?></span>
+                                    <br><b>Operating System</b>: <span id="user-os"><?php echo $other_uid['os']." ".$other_uid['os_version']; ?></span>
+                                    <br><b>Browser</b>: <span id="user-browser"><?php echo $other_uid['browser']." ".$other_uid['browser_version']; ?></span>
                                     <br><b>Time Zone</b>: <span id="user-tz"><?php echo $other_uid['time_zone'] ?></span>
                                 </li>
                                 <?php
@@ -157,8 +158,10 @@
                             <h5 class="card-title">JSON Output</h5>
                             <hr>
                             <!-- Place the JSON used on this page here -->
-                            <pre><code>
-                                <?php echo $response_json; ?>
+                            <pre><code id="json">
+                                <script>
+                                document.getElementById("json").innerHTML = JSON.stringify(<?php echo $response_json; ?>, null, "\t");
+                                </script>
                             </code></pre>
                         </div>
                     </div>

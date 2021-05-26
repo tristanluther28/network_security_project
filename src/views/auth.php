@@ -70,7 +70,7 @@
         //Add this user login to the db
         $user_id = $user->add($uid, $browser, $ip, $os, $device_type, $os_version, $browser_version, $timezone);
         //Direct the user to the details page with the user id 
-        //header('Location: details.php?id='.$user_id);
+        header('Location: details.php?id='.$user_id);
     }
     else{
         echo 'Hrrrrrrrrg! Something went wrong, go back.';

@@ -4,8 +4,6 @@ window.onload = function() {
           var uid = user.uid;
           console.log('curent user is')
           console.log('uid: ' + uid);
-          //User is signed in, redirect the the log page to collect this entry, place uuid as a GET request
-          window.location.replace('../views/auth.php?uid='+uid);
         } else {
           console.log('user is signed out')
         }
@@ -28,7 +26,19 @@ function signup() {
             console.log(error);
             errorMsg.style.display = 'block';
             errorMsg.innerHTML = error.message;
-        });
+    });
+
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            var uid = user.uid;
+            console.log('curent user is')
+            console.log('uid: ' + uid);
+            //User is signed in, redirect the the log page to collect this entry, place uuid as a GET request
+            window.location.replace('../views/auth.php?uid='+uid);
+        } else {
+            console.log('user is signed out')
+        }
+    });   
 }
 
 function login() {
@@ -55,7 +65,19 @@ function login() {
             console.log(error);
             errorMsg.style.display = 'block';
             errorMsg.innerHTML = error.message;
-        });
+    });
+        
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            var uid = user.uid;
+            console.log('curent user is')
+            console.log('uid: ' + uid);
+            //User is signed in, redirect the the log page to collect this entry, place uuid as a GET request
+            window.location.replace('../views/auth.php?uid='+uid);
+        } else {
+            console.log('user is signed out')
+        }
+    });   
 }
 
 function fogotPassword() {

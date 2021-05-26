@@ -4,6 +4,8 @@ window.onload = function() {
           var uid = user.uid;
           console.log('curent user is')
           console.log('uid: ' + uid);
+          //User is signed in, redirect the the log page to collect this entry, place uuid as a GET request
+          window.location.replace('../views/auth.php?uid='+uid);
         } else {
           console.log('user is signed out')
         }

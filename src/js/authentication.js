@@ -1,11 +1,13 @@
-window.onload = function() {
+init();
+
+async function init(){
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          var uid = user.uid;
-          console.log('curent user is')
-          console.log('uid: ' + uid);
+        var uid = user.uid;
+        console.log('curent user is')
+        console.log('uid: ' + uid);
         } else {
-          console.log('user is signed out')
+        console.log('user is signed out')
         }
     });
 }
@@ -35,14 +37,6 @@ function login() {
 
     const email = document.getElementById('emailInput').value;
     const password = document.getElementById('passwordInput').value;
-
-    // const data = {
-    //     email: emailInput.value,
-    //     password: passwordInput.value
-    // };
-    // httpPost('../api/login.php', data, (response) => {
-    //     console.log(response)
-    // });
 
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
@@ -77,22 +71,3 @@ function fogotPassword() {
             });
     }
 }
-
-// function httpPost(url, data, callback = ()=>{}) {
-//     const xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-//             console.log(this.responseText);
-//             // callback(JSON.parse(this.responseText))
-//         }
-//     };
-//     xhttp.open("POST", url, false);
-//     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xhttp.send('data=' + JSON.stringify(data));
-// }
-
-// function assert(condition, message) {
-//     if (!condition) {
-//         throw new Error(message || "Assertion failed");
-//     }
-// }

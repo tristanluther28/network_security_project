@@ -1,1 +1,6 @@
 test
+vendor
+.idea
+firebaseAdminCredential.json
+node_modules
+*.log

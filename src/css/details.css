@@ -34,6 +34,12 @@ a{
     color: #bfbfbf;
 }
 
+.scroll {
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
 .navBar {
     width: 100%;
     min-height: 50px;

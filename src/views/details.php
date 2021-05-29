@@ -87,33 +87,35 @@
             </div>
             <div class="row">
                 <div class="col-4">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card" style="">
                         <div class="card-body">
                             <h5 class="card-title">All Active Locations</h5>
                             <hr>
-                            <ul>
-                                <!-- List all locations that are currently signed in -->
-                                <?php
-                                    foreach($other_user as $other_uid){
-                                        //Grab other user information based on public IP Address
-                                        $url = 'http://ip-api.com/json/'.$other_uid['ip'];
-                                        $ch = curl_init($url);
-                                        curl_setopt($ch, CURLOPT_HTTPGET, true);
-                                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                                        $response_json = curl_exec($ch);
-                                        curl_close($ch);
-                                        $ip_api_other=json_decode($response_json, true);
-                                ?>
-                                <li>
-                                    <b>Locations</b>: <span id="user-city"><?php echo $ip_api_other['city'] ?></span>, <span id="user-state"><?php echo $ip_api_other['regionName'] ?></span> <span id="user-country"><?php echo $ip_api_other['country'] ?></span>
-                                    <br><b>Operating System</b>: <span id="user-os"><?php echo $other_uid['os']." ".$other_uid['os_version']; ?></span>
-                                    <br><b>Browser</b>: <span id="user-browser"><?php echo $other_uid['browser']." ".$other_uid['browser_version']; ?></span>
-                                    <br><b>Time Zone</b>: <span id="user-tz"><?php echo $other_uid['time_zone'] ?></span>
-                                </li>
-                                <?php
-                                    }
-                                ?>
-                            </ul>
+                            <div class="scroll">
+                                <ul>
+                                    <!-- List all locations that are currently signed in -->
+                                    <?php
+                                        foreach($other_user as $other_uid){
+                                            //Grab other user information based on public IP Address
+                                            $url = 'http://ip-api.com/json/'.$other_uid['ip'];
+                                            $ch = curl_init($url);
+                                            curl_setopt($ch, CURLOPT_HTTPGET, true);
+                                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                            $response_json = curl_exec($ch);
+                                            curl_close($ch);
+                                            $ip_api_other=json_decode($response_json, true);
+                                    ?>
+                                    <li>
+                                        <b>Locations</b>: <span id="user-city"><?php echo $ip_api_other['city'] ?></span>, <span id="user-state"><?php echo $ip_api_other['regionName'] ?></span> <span id="user-country"><?php echo $ip_api_other['country'] ?></span>
+                                        <br><b>Operating System</b>: <span id="user-os"><?php echo $other_uid['os']." ".$other_uid['os_version']; ?></span>
+                                        <br><b>Browser</b>: <span id="user-browser"><?php echo $other_uid['browser']." ".$other_uid['browser_version']; ?></span>
+                                        <br><b>Time Zone</b>: <span id="user-tz"><?php echo $other_uid['time_zone'] ?></span>
+                                    </li>
+                                    <?php
+                                        }
+                                    ?>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

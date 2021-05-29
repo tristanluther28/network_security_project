@@ -93,10 +93,93 @@ async function processData(data){
     }
 }
 
-// algorithm goes here
+// algorithm goes here edit here
 function isUnidentifiedUser(data){
-    return true;
+   /* var lastData = collectLastData();
+
+    if (lastData.login.email == data.login.email){
+        console.log("email is same");
+    }
+    if (lastData.device.browser.name == data.device.browser.name){
+        console.log("browser is same");
+    }
+
+    if ( lastData.login.uid == data.login.uid)
+    {
+        console.log("uid is same");
+
+        if(lastData.login.ip != data.login.ip)
+        {
+            console.log("ip is different");
+            return true;
+        }
+        if(lastData.device.deviceType != data.device.deviceType)
+        {
+            console.log("device type is different");
+            return true;
+        }
+        if(lastData.location.timezone != data.location.timezone)
+        {
+            console.log("timezone is different");
+            return true;
+        }
+        if(lastData.location.offset != data.location.offset)
+        {
+            console.log("location is different");
+            return true;
+        }
+        if(lastData.device.os.name != data.device.os.name)
+        {
+            console.log("os is different");
+            return true;
+        } 
+    }
+    return false;
+    */return true;
 }
+/*
+function collectLastData(){
+    var lastData = {
+        "login":{
+            "uid":"asdfqwerasdf",
+            "email":"test@email.com",
+            "ip":"127.0.0.1"
+        },
+        "device":{
+            "cookieEnabled":true,
+            "deviceMemory":8,
+            "hardwareConcurrency":12,
+            "language":"en-US",
+            "languages":["en-US","en"],
+            "platform":"Win32",
+            "userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36",
+            "deviceType":"desktop",
+            "browser":{
+                "name":"Chrome",
+                "version":90.04430212
+            },
+            "os":{
+                "name":"Windows",
+                "version":10
+            }
+        },
+        "canvas":{
+            "renderer":"WebKit WebGL",
+            "gpu":"ANGLE (Intel, Intel(R) UHD Graphics 630 Direct3D11 vs_5_0 ps_5_0, D3D11-26.20.100.7925)",
+            "supportsTouch":false
+        },
+        "connection":{
+        },
+        "location":{
+            "offset":420,
+            "timezone":"America/Los_Angeles"
+        }
+    }
+    
+
+    return lastData;
+}
+*/
 
 function getJson(str){
     return JSON.parse(str.substring(

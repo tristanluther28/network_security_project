@@ -13,7 +13,7 @@ async function init(){
         document.getElementById("joinmenu").href = "#";
 
         } else {
-        console.log('user is signed out')
+            console.log('user is signed out')
         }
     });
 }
@@ -28,7 +28,7 @@ function signup() {
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
             console.log('signed up')
-            window.location.href = '#';
+            window.location.href = '/';
         })
         .catch((error) => {
             console.log(error);
@@ -47,7 +47,7 @@ function login() {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
             console.log('signed in')
-            window.location.href = '#';
+            window.location.href = '/';
         })
         .catch((error) => {
             console.log(error);

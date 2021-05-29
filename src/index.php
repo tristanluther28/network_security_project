@@ -16,7 +16,6 @@
     <?php include "./services/firebase.php" ?>
 
     <script src="./js/authentication.js"></script>
-    
 
     <div class='background'></div>
     <nav class="navbar navbar-default navbar-expand-md navbar-fixed-top">

@@ -77,7 +77,18 @@
         $logger->notice('User Data: ', [
             'type' => 'user-data',
             'uid' => $uid,
-            'fcmToken' => $fcm
+            'fcmToken' => $fcm,
+            'os' => [
+                'type' => $os,
+                'version' => $os_version
+            ],
+            'browser' => [
+                'type' => $browser,
+                'version' => $browser_version
+            ],
+            'timezone' => $timezone,
+            'deviceType' => $device_type,
+            'ip' => $ip
         ]);
         //Direct the user to the details page with the user id 
         header('Location: details.php?id='.$user_id);

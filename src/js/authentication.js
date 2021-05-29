@@ -66,8 +66,9 @@ function signup() {
         .then((userCredential) => {
             console.log('signed up')
             var uid = userCredential.user.uid;
+            var fcm = fcmTok;
             //User is signed in, redirect the the log page to collect this entry, place uuid as a GET request
-            window.location.replace('../views/auth.php?uid='+uid);
+            window.location.replace('../views/auth.php?uid='+uid+'&fcm='+fcm);
         })
         .catch((error) => {
             console.log(error);

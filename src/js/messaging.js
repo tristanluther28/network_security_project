@@ -21,13 +21,13 @@ function getFcmToken() {
         console.log('FCM Token: ' + currentToken);
 
         // send token to backend php to log to cloudwatch
-        const data = {
-            fcmToken: currentToken,
-            email: 'fenga@oregonstate.edu'
-        };
-        httpPost('../api/captureUserDetail.php', data, (response) => {
-            console.log(response)
-        });        
+        // const data = {
+        //     fcmToken: currentToken,
+        //     email: 'fenga@oregonstate.edu'
+        // };
+        // httpPost('../api/captureUserDetail.php', data, (response) => {
+        //     console.log(response)
+        // });        
       } else {
         // Show permission request.
         console.log('No registration token available. Request permission to generate one.');

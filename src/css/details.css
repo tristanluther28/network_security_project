@@ -1,0 +1,44 @@
+body{
+    background: radial-gradient(#7E00FD 5%, #0C0314 50%);
+    height: 100%;
+}
+
+.login-btn{
+    background: linear-gradient(#F338C3, #27B0E6);
+    border-color: #0C0314;
+}
+
+.welcome-btn{
+    background: linear-gradient(#FE5A75, #EECC44);
+    border-color: #0C0314;
+}
+
+.btn{
+    min-width:210px;
+}
+
+.container{
+    margin-top: 50px;
+    color: #bfbfbf;
+}
+
+h1{
+    font-size: 60px;
+}
+
+.card{
+    background-color: #0d0b22;
+}
+
+a{
+    color: #bfbfbf;
+}
+
+.navBar {
+    width: 100%;
+    min-height: 50px;
+    background-color: gray;
+    top: 0;
+    left: 0;
+    position: absolute;
+}

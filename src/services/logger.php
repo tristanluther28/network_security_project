@@ -15,7 +15,7 @@ $facility = "local0";
 $cwClient = new CloudWatchLogsClient([
     'region' => 'us-east-1',
     'version' => 'latest',
-    'profile' => 'alm',
+    'profile' => 'default',
 //    'scheme' => 'http'
 ]);
 // Log group name, will be created if none

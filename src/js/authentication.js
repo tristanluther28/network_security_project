@@ -1,4 +1,7 @@
+const messaging = firebase.messaging();
 init();
+
+var fcmTok;
 
 async function init(){
     firebase.auth().onAuthStateChanged((user) => {
@@ -9,6 +12,46 @@ async function init(){
         } else {
         console.log('user is signed out')
         }
+    }); 
+    messaging.onMessage((payload) => {
+        // payload.notification for unicast
+        // payload.data for multicast
+        console.log('Message received. ', payload.data);
+        alert(JSON.stringify(payload.data));
+    });
+
+    requestNotificationPermission();
+}
+
+function getFcmToken() {
+    // Get registration token. Initially this makes a network call, once retrieved
+    // subsequent calls to getToken will return from cache.
+    messaging.getToken({vapidKey: 'BGQZ0NVIRsbWITCs8XoVbnNZXjUqbummDVghxrGt6hncDvKlwARyhr2QMIsSCMdmbFUfLK8uLL4QuLH2npFu7cg'}).then((currentToken) => {
+      if (currentToken) {
+        console.log('FCM Token: ' + currentToken);
+        fcmTok = currentToken;
+      } else {
+        // Show permission request.
+        console.log('No registration token available. Request permission to generate one.');
+      }
+    }).catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
+    });
+}
+
+
+function requestNotificationPermission() {
+    console.log('Requesting notification permission...');
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        // TODO(developer): Retrieve a registration token for use with FCM.
+        // In many cases once an app has been granted notification permission,
+        // it should update its UI reflecting this.
+        getFcmToken();
+      } else {
+        console.log('Unable to get permission to notify.');
+      }
     });
 }
 
@@ -22,7 +65,9 @@ function signup() {
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
             console.log('signed up')
-            window.location.href = '#';
+            var uid = userCredential.user.uid;
+            //User is signed in, redirect the the log page to collect this entry, place uuid as a GET request
+            window.location.replace('../views/auth.php?uid='+uid);
         })
         .catch((error) => {
             console.log(error);
@@ -41,7 +86,10 @@ function login() {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
             console.log('signed in')
-            window.location.href = '#';
+            var uid = userCredential.user.uid;
+            var fcm = fcmTok;
+            //User is signed in, redirect the the log page to collect this entry, place uuid as a GET request
+            window.location.replace('../views/auth.php?uid='+uid+'&fcm='+fcm);
         })
         .catch((error) => {
             console.log(error);

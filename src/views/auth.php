@@ -10,6 +10,7 @@
     require_once "../classes/Db.php";
     require_once "../classes/Users.php";
     require_once '../vendor/autoload.php';
+    
     //Use the Matomo Device Detector (https://github.com/matomo-org/device-detector)
     use DeviceDetector\DeviceDetector;
     use DeviceDetector\Parser\Device\AbstractDeviceParser;
@@ -69,6 +70,8 @@
         $browser_version = $browser_array['version'];
         //Add this user login to the db
         $user_id = $user->add($uid, $browser, $ip, $os, $device_type, $os_version, $browser_version, $timezone);
+        //Post to CloudWatch 
+
         //Direct the user to the details page with the user id 
         header('Location: details.php?id='.$user_id);
     }

@@ -10,7 +10,7 @@ async function init(){
         document.getElementById("loginmenu").textContent = "Logout";
         document.getElementById("loginmenu").href = "/views/logout.php";
         document.getElementById("joinmenu").textContent = "Hello! " + user.email;
-        document.getElementById("joinmenu").href = "#";
+        document.getElementById("joinmenu").href = "/views/user.php";
 
         } else {
             console.log('user is signed out')

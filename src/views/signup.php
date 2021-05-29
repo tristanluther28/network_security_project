@@ -36,7 +36,7 @@
                             <a href="/">Home</a>
                         </li>
                         <li>
-                            <a href="/views/user.php">Detail</a>
+                            <a href="#">Detail</a>
                         </li>
                         <li class="active">
                             <a id="joinmenu" href="/views/signup.php">Sign Up</a>

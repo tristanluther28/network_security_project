@@ -30,10 +30,10 @@
                     <li>
                         <a href="/">Home</a>
                     </li>
-                    <li class="active">
-                        <a href="/views/user.php">Detail</a>
-                    </li>
                     <li>
+                        <a href="#">Detail</a>
+                    </li>
+                    <li class="active">
                         <a id="joinmenu" href="/views/signup.php">Sign Up</a>
                     </li>
                     <li>

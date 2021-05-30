@@ -39,7 +39,7 @@
 <body>
     <script src="../js/authentication.js"></script>
     <script src="../js/messaging.js"></script>
-    <script src="../js/fingerprinting.js"></script>
+    
     
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
@@ -87,7 +87,7 @@
                         <a href="/">Home</a>
                     </li>
                     <li class="active">
-                        <a href="/views/details.php?id=<?php echo $id ?>">Detail</a>
+                        <a href="/views/details.php?id=<?php echo $id ?>">Hello, <?php echo $_SESSION['email']; ?></a>
                     </li>
                     <li>
                         <a id="joinmenu" href="/views/signup.php">Sign Up</a>
@@ -103,7 +103,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-4">
-                    <h1>Hello <span id="user-name">User</span></h1>
+                    <h1>Hello <span id="user-name"><?php echo $_SESSION['email'] ?></span></h1>
                 </div>
                 <div class="col-4">
                 </div>
@@ -188,10 +188,7 @@
                             <h5 class="card-title">JSON Output</h5>
                             <hr>
                             <!-- Place the JSON used on this page here -->
-                            <pre><code id="json">
-                                <script>
-                                document.getElementById("json").innerHTML = JSON.stringify(<?php echo $response_json; ?>, null, "\t");
-                                </script>
+                            <pre><code id="json-data">
                             </code></pre>
                         </div>
                     </div>
@@ -200,6 +197,8 @@
         </div>
     </div>
 </body>
+<script src="../js/fingerprinting.js"></script>
+<script>document.getElementById("json-data").innerHTML = JSON.stringify(data, null, "\t");</script>
 <?php
     }
     else{

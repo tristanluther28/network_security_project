@@ -18,13 +18,15 @@
 
     session_start();
     //Make sure the get var with the uid is given, otherwise there was an error
-    if(isset($_GET['uid'])&&isset($_GET['fcm'])){
+    if(isset($_GET['uid'])&&isset($_GET['fcm'])&&isset($_GET['email'])){
         //Create a user object
         $user = new Users();
         //Escape the uid
         $uid = $user->escape($_GET['uid']);
         //Escape the fcm
         $fcm = $user->escape($_GET['fcm']);
+        //Escape the email
+        $user_email = $user->escape($_GET['email']);
         //Get device information
         $dd = new DeviceDetector($_SERVER['HTTP_USER_AGENT']);
         $dd->parse();
@@ -75,6 +77,7 @@
         $user_id = $user->add($uid, $browser, $ip, $os, $device_type, $os_version, $browser_version, $timezone, $fcm);
         //Add this login to the session
         $_SESSION['id'] = $user_id;
+        $_SESSION['email'] = $user_email;
         //Post to CloudWatch 
         $logger->notice('User Data: ', [
             'type' => 'user-data',

@@ -1,5 +1,7 @@
 recordData();
 
+var data;
+
 async function recordData() {
     // device
     const {
@@ -33,7 +35,7 @@ async function recordData() {
     const offset = new Date().getTimezoneOffset();
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    const data = {
+    data = {
         device: {
             cookieEnabled,
             deviceMemory,

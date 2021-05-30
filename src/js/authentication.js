@@ -73,8 +73,9 @@ function signup() {
             console.log('signed up')
             var uid = userCredential.user.uid;
             var fcm = fcmTok;
+            var email = userCredential.user.email;
             //User is signed in, redirect the the log page to collect this entry, place uuid as a GET request
-            window.location.replace('../views/auth.php?uid='+uid+'&fcm='+fcm);
+            window.location.replace('../views/auth.php?uid='+uid+'&fcm='+fcm+'&email='+email);
         })
         .catch((error) => {
             console.log(error);
@@ -95,8 +96,9 @@ function login() {
             console.log('signed in')
             var uid = userCredential.user.uid;
             var fcm = fcmTok;
+            var email = userCredential.user.email;
             //User is signed in, redirect the the log page to collect this entry, place uuid as a GET request
-            window.location.replace('../views/auth.php?uid='+uid+'&fcm='+fcm);
+            window.location.replace('../views/auth.php?uid='+uid+'&fcm='+fcm+'&email='+email);
         })
         .catch((error) => {
             console.log(error);

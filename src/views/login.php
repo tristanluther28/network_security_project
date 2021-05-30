@@ -34,7 +34,7 @@
                     if(isset($_SESSION['id'])){
                     ?>
                     <li>
-                        <a href="/views/details.php?id=<?php echo $_SESSION['id'] ?>">Detail</a>
+                        <a href="/views/details.php?id=<?php echo $_SESSION['id'] ?>">Hello, <?php echo $_SESSION['email']; ?></a>
                     </li>
                     <?php
                         }

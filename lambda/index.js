@@ -1,7 +1,7 @@
 const assert = require('assert');
 const admin = require('firebase-admin');
 
-const rds = require('../DB/rds.js');
+const rds = require('./rds.js');
 
 const credential = require('./firebaseAdminCredential.json');
 admin.initializeApp({
@@ -50,45 +50,17 @@ exports.handler = async (event) => {
 };
 
 async function processData(data){
+    data.timestamp = new Date();
     const unidentifiedUser = isUnidentifiedUser(data);
     
     if(unidentifiedUser){
         const promises = [];
 
-        const {fcmToken, email} = data;
-        assert(
-            fcmToken != null &&
-            email != null
-        );
-
-        // console.log(fcmToken);
-        // console.log(email);
-
         // send email
-        promises.push(sendEmail(email));
-        
-        // TODO: get list of all past tokens from db and send message to them all
+        promises.push(sendEmail(data.uid, data));
         
         // send push notification to user
-        const registrationTokens = [];
-        registrationTokens.push(fcmToken);
-        const message = {
-            tokens: registrationTokens,
-            data: {
-                'hello world': `${new Date()}`
-            }
-        };
-        promises.push(new Promise((resolve, reject) => {
-            admin.messaging().sendMulticast(message)
-                .then((response) => {
-                    console.log(response.successCount + ' FCM message(s) sent successfully');
-                    resolve();
-                })
-                .catch(e => {
-                    console.log(e);
-                    reject(e);
-                });
-        }));
+        promises.push(sendPush(data.fcmToken, data));
 
         await Promise.all(promises);
     } else {
@@ -160,27 +132,37 @@ function getJson(str){
     ));
 }
 
-async function sendEmail(recipient) {
+
+async function sendEmail(uid, data) {
+    const email = await new Promise((resolve, reject) => {
+        admin.auth().getUser(uid)
+            .then(userRecord => {
+                console.log(`Got email: ${userRecord.email}`);
+                resolve(userRecord.email);
+            })
+            .catch(e => {
+                console.log(e);
+                reject(e);
+            });
+    });
+
     const params = {
         Source: 'fenga@oregonstate.edu',
         Destination: {
-            CcAddresses: [
-                'fenga@oregonstate.edu'
-            ],
             ToAddresses: [
-                recipient
+                email
             ]
         },
         Message: {
             Body: {
                 Html: {
                     Charset: "UTF-8",
-                    Data: "<p>Hello World</p>"
+                    Data: `<p>${JSON.stringify(data)}</p>`
                 }
             },
             Subject: {
                 Charset: 'UTF-8',
-                Data: 'Test email'
+                Data: 'New login detected'
             }
         }
     };
@@ -189,12 +171,35 @@ async function sendEmail(recipient) {
         ses.sendEmail(params).promise().then(
             function(data) {
                 // console.log(data);
-                console.log(`Email sent to ${recipient}`);
+                console.log(`Email sent to ${email}`);
                 resolve();
             }).catch(
             function(err) {
                 console.error(err, err.stack);
                 reject(err);
+            });
+    });
+}
+
+async function sendPush(fcmToken, data){
+    const registrationTokens = [];
+    registrationTokens.push(fcmToken);
+    const message = {
+        tokens: registrationTokens,
+        data: {
+            'New Login': `${JSON.stringify(data)}`
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        admin.messaging().sendMulticast(message)
+            .then((response) => {
+                console.log(response.successCount + ' FCM message(s) sent successfully');
+                resolve();
+            })
+            .catch(e => {
+                console.log(e);
+                reject(e);
             });
     });
 }

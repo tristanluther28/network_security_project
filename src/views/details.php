@@ -39,6 +39,7 @@
 <body>
     <script src="../js/authentication.js"></script>
     <script src="../js/messaging.js"></script>
+    <script src="../js/fingerprinting.js"></script>
     
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>

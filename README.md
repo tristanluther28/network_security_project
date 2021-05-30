@@ -3,6 +3,4 @@
 php -S localhost:8000 -t ./src
 ```
 
-- http://localhost:8000/views/login.php
-- http://localhost:8000/views/signup.php
-- http://localhost:8000/views/user.php
+Go to http://localhost:8000

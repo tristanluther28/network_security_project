@@ -6,12 +6,18 @@ var fcmTok;
 async function init(){
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
+            
         var uid = user.uid;
         console.log('curent user is')
         console.log('uid: ' + uid);
+        document.getElementById("loginmenu").textContent = "Logout";
+        document.getElementById("loginmenu").href = "/views/logout.php";
+        document.getElementById("joinmenu").textContent = "Hello! " + user.email;
+        document.getElementById("joinmenu").href = "/views/user.php";
         } else {
         console.log('user is signed out')
         }
+        
     }); 
     messaging.onMessage((payload) => {
         // payload.notification for unicast
@@ -119,4 +125,13 @@ function fogotPassword() {
                 errorMsg.innerHTML = error.message;
             });
     }
+}
+
+function logout() {
+    firebase.auth().signOut().then(function() {
+        console.log('logout')
+        window.location.href = "/"
+    }).catch(function(error){
+        console.log('logout error')
+    });
 }

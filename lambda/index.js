@@ -1,5 +1,8 @@
 const assert = require('assert');
 const admin = require('firebase-admin');
+
+const rds = require('../DB/rds.js');
+
 const credential = require('./firebaseAdminCredential.json');
 admin.initializeApp({
     credential: admin.credential.cert(credential),
@@ -93,9 +96,61 @@ async function processData(data){
     }
 }
 
-// algorithm goes here
+// algorithm goes here edit here
 function isUnidentifiedUser(data){
-    return true;
+
+    var lastData = collectLastData(data);
+
+    if ( lastData.uid_firebase == data.uid)
+    {
+        console.log("uid is same");
+
+        if(lastData.ip != data.ip)
+        {
+            console.log("ip is different");
+            return true;
+        }
+
+        if(lastData.device_type != data.deviceType)
+        {
+            console.log("device type is different");
+            return true;
+        }
+
+        if(lastData.time_zone != data.timezone)
+        {
+            console.log("timezone is different");
+            return true;
+        }
+
+        if(lastData.os != data.os.type)
+        {
+            console.log("os is different");
+            return true;
+        } 
+
+        if ((lastData.browser != data.browser.type) && (lastData.os_version != data.os.version)){
+            console.log("browser is different");
+            return true;
+        }
+    }
+    return false;
+}
+
+async function collectLastData(data){
+    await rds.init();
+    
+    const lastdata = await rds.query("SELECT * FROM users WHERE uid_firebase='"+data.uid+"' ORDER BY timestamp");
+    /*
+    var i = 0;
+    while(i < lastdata.length){
+        console.log(lastdata[i]);
+        i++;
+    }
+    */
+    
+    await rds.end();
+    return lastdata[lastdata.length -2];
 }
 
 function getJson(str){

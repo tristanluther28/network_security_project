@@ -8,8 +8,8 @@ class Users extends Db {
         return str_replace($search, $replace, $value);
     }
     //Insert a new user data
-    public function add($uid, $browser, $ip, $os, $device_type, $os_version, $browser_version, $timezone){
-        $sql = "INSERT INTO users (browser, ip, os, device_type, time_zone, os_version, browser_version, uid_firebase) VALUES ('$browser', '$ip', '$os', '$device_type', '$timezone', '$os_version', '$browser_version', '$uid')";
+    public function add($uid, $browser, $ip, $os, $device_type, $os_version, $browser_version, $timezone, $fcm){
+        $sql = "INSERT INTO users (browser, ip, os, device_type, time_zone, os_version, browser_version, uid_firebase, fcmToken) VALUES ('$browser', '$ip', '$os', '$device_type', '$timezone', '$os_version', '$browser_version', '$uid', '$fcm')";
         $conn = $this->connect();
         $conn->query($sql);
         return $conn->lastInsertId();

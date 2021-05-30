@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 
 <html>
-
+<?php
+    session_start();
+?>
 <head>
     <title>Login</title>
 
     <link rel="stylesheet" href="../css/authentication.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -15,7 +19,36 @@
     <script src="../js/authentication.js"></script>
 
     <div class='background'></div>
-    <div class='navBar'></div>
+    <nav class="navbar navbar-default navbar-expand-md navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">ECE 478: Client Fingerprinting Techniques</a>
+            </div>
+                
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <?php
+                    if(isset($_SESSION['id'])){
+                    ?>
+                    <li>
+                        <a href="/views/details.php?id=<?php echo $_SESSION['id'] ?>">Detail</a>
+                    </li>
+                    <?php
+                        }
+                    ?>
+                    <li>
+                        <a id="joinmenu" href="/views/signup.php">Sign Up</a>
+                    </li>
+                    <li class="active">
+                        <a id="loginmenu" href="/views/login.php">Login</a>
+                    </li>
+                </ul>
+            </div>
+         </div>
+    </nav>
     
     <div class='hCenter'>
         <div class="container loginCard vCenter">

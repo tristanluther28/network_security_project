@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/styles/default.min.css">
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.2/build/highlight.min.js"></script>
     <link rel="stylesheet" href="../css/details.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -73,7 +74,31 @@
     ?>
 
     <div class='background'>
-        <div class='navBar'></div>
+    <nav class="navbar navbar-default navbar-expand-md navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">ECE 478: Client Fingerprinting Techniques</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li class="active">
+                        <a href="/views/details.php?id=<?php echo $id ?>">Detail</a>
+                    </li>
+                    <li>
+                        <a id="joinmenu" href="/views/signup.php">Sign Up</a>
+                    </li>
+                    <li>
+                        <a id="loginmenu" href="/views/login.php">Login</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
         <div class="container">
             <div class="row">
                 <div class="col-4">

@@ -4,13 +4,13 @@ body{
 }
 
 .login-btn{
-    background: linear-gradient(#F338C3, #27B0E6);
-    border-color: #0C0314;
+    background: linear-gradient(#F338C3, #27B0E6) !important;
+    border-color: #0C0314 !important;
 }
 
 .welcome-btn{
-    background: linear-gradient(#FE5A75, #EECC44);
-    border-color: #0C0314;
+    background: linear-gradient(#FE5A75, #EECC44) !important;
+    border-color: #0C0314 !important;
 }
 
 .btn{

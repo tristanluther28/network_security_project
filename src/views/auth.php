@@ -72,7 +72,9 @@
         //Get the browser version
         $browser_version = $browser_array['version'];
         //Add this user login to the db
-        $user_id = $user->add($uid, $browser, $ip, $os, $device_type, $os_version, $browser_version, $timezone);
+        $user_id = $user->add($uid, $browser, $ip, $os, $device_type, $os_version, $browser_version, $timezone, $fcm);
+        //Add this login to the session
+        $_SESSION['id'] = $user_id;
         //Post to CloudWatch 
         $logger->notice('User Data: ', [
             'type' => 'user-data',

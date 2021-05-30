@@ -16,7 +16,7 @@ $cwClient = new CloudWatchLogsClient([
     'region' => 'us-east-1',
     'version' => 'latest',
     // 'profile' => 'default',
-    // credentials part
+    // 'credentials' => 
 //    'scheme' => 'http'
 ]);
 // Log group name, will be created if none

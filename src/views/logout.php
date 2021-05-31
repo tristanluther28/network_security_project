@@ -62,6 +62,7 @@
     <?php
         echo "Logout";
         unset($_SESSION['id']);
+        unset($_SESSION['email']);
     ?>
     
 </body>

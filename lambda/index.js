@@ -21,6 +21,8 @@ exports.handler = async (event) => {
     const logs = JSON.parse(zlib.unzipSync(payload).toString()).logEvents;
 
     const promises = [];
+
+    await rds.init();
     
     // go through each log message
     for(const log of logs) {
@@ -45,6 +47,8 @@ exports.handler = async (event) => {
     }
     
     await Promise.all(promises);
+
+    await rds.end();
     
     return {};
 };
@@ -57,10 +61,10 @@ async function processData(data){
         const promises = [];
 
         // send email
-        promises.push(sendEmail(data.uid, data));
+        promises.push(sendEmail(data));
         
         // send push notification to user
-        promises.push(sendPush(data.fcmToken, data));
+        promises.push(sendPush(data));
 
         await Promise.all(promises);
     } else {
@@ -109,9 +113,7 @@ function isUnidentifiedUser(data){
     return false;
 }
 
-async function collectLastData(data){
-    await rds.init();
-    
+async function collectLastData(data){    
     const lastdata = await rds.query("SELECT * FROM users WHERE uid_firebase='"+data.uid+"' ORDER BY timestamp");
     /*
     var i = 0;
@@ -120,8 +122,6 @@ async function collectLastData(data){
         i++;
     }
     */
-    
-    await rds.end();
     return lastdata[lastdata.length -2];
 }
 
@@ -133,9 +133,9 @@ function getJson(str){
 }
 
 
-async function sendEmail(uid, data) {
+async function sendEmail(data) {
     const email = await new Promise((resolve, reject) => {
-        admin.auth().getUser(uid)
+        admin.auth().getUser(data.uid)
             .then(userRecord => {
                 console.log(`Got email: ${userRecord.email}`);
                 resolve(userRecord.email);
@@ -181,20 +181,26 @@ async function sendEmail(uid, data) {
     });
 }
 
-async function sendPush(fcmToken, data){
-    const registrationTokens = [];
-    registrationTokens.push(fcmToken);
+async function sendPush(data){
+    const rawTokens = await rds.query(`SELECT fcmToken FROM users WHERE uid_firebase='${data.uid}' AND fcmToken!='${data.fcmToken}' AND fcmToken!='undefined' AND LENGTH(fcmToken)>0`);
+    let registrationTokens = [];
+    for(const rawToken of rawTokens){
+        registrationTokens.push(rawToken.fcmToken);
+    }
+    // remove duplicate tokens
+    registrationTokens = Array.from(new Set(registrationTokens));
+
     const message = {
         tokens: registrationTokens,
         data: {
-            'New Login': `${JSON.stringify(data)}`
+            'New login detected': `${JSON.stringify(data)}`
         }
     };
 
     return new Promise((resolve, reject) => {
         admin.messaging().sendMulticast(message)
             .then((response) => {
-                console.log(response.successCount + ' FCM message(s) sent successfully');
+                console.log(response.successCount + ` FCM message(s) sent successfully to ${registrationTokens.length} person(s)`);
                 resolve();
             })
             .catch(e => {

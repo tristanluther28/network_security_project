@@ -4,4 +4,3 @@ vendor
 firebaseAdminCredential.json
 node_modules
 *.log
-src/classes/_Db.php

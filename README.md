@@ -54,6 +54,7 @@ composer install
 php -S localhost:8000 -t ./src
 ```
 Go to http://localhost:8000
+- You must accept the notifiation popup
 - Note: website must be run on a live server (not locally) in order for ip capture to work
 
 # Troubleshooting
@@ -61,5 +62,9 @@ Go to http://localhost:8000
     - Make sure to configure AWS credentials properly
 - Curl SSL error
     1. Download `cacert.pem` from https://curl.se/docs/caextract.html
-    - Go to PHP directory and update `curl.cainfo = <path to cacert.pem` in `php.ini`
-    2. Restart PHP if using XAMP
+    2. Go to PHP directory and update `curl.cainfo = <path to cacert.pem` in `php.ini`
+    3. Restart PHP if using XAMP
+- Website is frozen or stuck loading on auth/details page
+    - Disable your VPN
+    - Try on a different browser like Chrome, Edge, Safari
+    - Make sure you're not on an incognito tab

@@ -54,8 +54,30 @@ exports.handler = async (event) => {
 };
 
 async function processData(data){
+    // data = {
+    //     "type": "user-data",
+    //     "uid": "AuuByZzZVYNCbcUTtfRsCNK5NOP2",
+    //     "fcmToken": "fXGf2c4ULq0-9zNgCczNqY:APA91bE14n8MXq5UAHkvE8TDVr8g6_8QPRnpbASMhRG_NkQocCiZpPkbl05QaC4ukKoD1MiI04oohuAA5valYoEZKFu56WZGOA-mp_391AWqu-pHGGZYUfVY-hMLfBcGDh-Z1ZlPCSKd",
+    //     "os": { "type": "Windows", "version": "10" },
+    //     "browser": { "type": "Chrome", "version": "90.0" },
+    //     "timezone": "America/Los_Angeles",
+    //     "deviceType": "Desktop/Laptop",
+    //     "ip": "71.237.149.135"
+    // };
+
+    // data = {
+    //     "type": "user-data",
+    //     "uid": "AuuByZzZVYNCbcUTtfRsCNK5NOP2",
+    //     "fcmToken": "e8KLJxCY2ct36-7UcgNzgw:APA91bGDtGZwGOGgNd3joaVTe_WHjW0GvUK-c6TVPTY9BMG6VSI_Ne4Yenp0-DiNLY6Vj7WK-W6_MzsHpeKqDaI43sMmVD0xVAzkFEDJoihTg_PlDYbbqP1I9k4_kT4EHTtPnMGx2U2D",
+    //     "os": { "type": "Windows", "version": "10" },
+    //     "browser": { "type": "Chrome", "version": "91.0" },
+    //     "timezone": "America/Los_Angeles",
+    //     "deviceType": "Desktop/Laptop",
+    //     "ip": "128.193.154.164"
+    // };
+
     data.timestamp = new Date();
-    const unidentifiedUser = isUnidentifiedUser(data);
+    const unidentifiedUser = await isUnidentifiedUser(data);
     
     if(unidentifiedUser){
         const promises = [];
@@ -73,56 +95,56 @@ async function processData(data){
 }
 
 // algorithm goes here edit here
-function isUnidentifiedUser(data){
+async function isUnidentifiedUser(data){
 
-    var lastData = collectLastData(data);
+    var collectedData = new Array();
+    collectedData = await collectData(data);
 
-    if ( lastData.uid_firebase == data.uid)
-    {
-        console.log("uid is same");
+    var i = 0;
 
-        if(lastData.ip != data.ip)
+    while(i < collectedData.length){
+        //If the uid matches and the entry is less than one hour old
+        if ( collectedData[i].uid_firebase == data.uid /*&& (data.timestamp - collectedData[i].timestamp) < 3600*/)
         {
-            console.log("ip is different");
-            return true;
-        }
+            console.log("uid is same");
 
-        if(lastData.device_type != data.deviceType)
-        {
-            console.log("device type is different");
-            return true;
-        }
+            if(collectedData[i].ip != data.ip)
+            {
+                console.log("ip is different");
+                return true;
+            }
 
-        if(lastData.time_zone != data.timezone)
-        {
-            console.log("timezone is different");
-            return true;
-        }
+            if(collectedData[i].device_type != data.deviceType)
+            {
+                console.log("device type is different");
+                return true;
+            }
 
-        if(lastData.os != data.os.type)
-        {
-            console.log("os is different");
-            return true;
-        } 
+            if(collectedData[i].time_zone != data.timezone)
+            {
+                console.log("timezone is different");
+                return true;
+            }
 
-        if ((lastData.browser != data.browser.type) && (lastData.os_version != data.os.version)){
-            console.log("browser is different");
-            return true;
+            if(collectedData[i].os != data.os.type)
+            {
+                console.log("os is different");
+                return true;
+            } 
+
+            if ((collectedData[i].browser != data.browser.type) && (collectedData[i].os_version != data.os.version)){
+                console.log("browser is different");
+                return true;
+            }
         }
+        i++;
     }
     return false;
 }
 
-async function collectLastData(data){    
-    const lastdata = await rds.query("SELECT * FROM users WHERE uid_firebase='"+data.uid+"' ORDER BY timestamp");
-    /*
-    var i = 0;
-    while(i < lastdata.length){
-        console.log(lastdata[i]);
-        i++;
-    }
-    */
-    return lastdata[lastdata.length -2];
+async function collectData(data){
+    const collectedData = await rds.query("SELECT * FROM users WHERE uid_firebase='"+data.uid+"' ORDER BY timestamp");
+    return collectedData;
 }
 
 function getJson(str){
@@ -189,23 +211,29 @@ async function sendPush(data){
     }
     // remove duplicate tokens
     registrationTokens = Array.from(new Set(registrationTokens));
+    console.log('registrationTokens: ' + registrationTokens);
+    // remove incoming token b/c don't want to receive that
+    // NOTE: doing again b/c sql sometimes doesn't work
+    registrationTokens = registrationTokens.filter(v => v !== data.fcmToken); 
 
-    const message = {
-        tokens: registrationTokens,
-        data: {
-            'New login detected': `${JSON.stringify(data)}`
-        }
-    };
+    if(registrationTokens.length > 0){
+        const message = {
+            tokens: registrationTokens,
+            data: {
+                'New login detected': `${JSON.stringify(data)}`
+            }
+        };
 
-    return new Promise((resolve, reject) => {
-        admin.messaging().sendMulticast(message)
-            .then((response) => {
-                console.log(response.successCount + ` FCM message(s) sent successfully to ${registrationTokens.length} person(s)`);
-                resolve();
-            })
-            .catch(e => {
-                console.log(e);
-                reject(e);
-            });
-    });
+        return new Promise((resolve, reject) => {
+            admin.messaging().sendMulticast(message)
+                .then((response) => {
+                    console.log(response.successCount + ` FCM message(s) sent successfully to ${registrationTokens.length} person(s)`);
+                    resolve();
+                })
+                .catch(e => {
+                    console.log(e);
+                    reject(e);
+                });
+        });
+    }
 }

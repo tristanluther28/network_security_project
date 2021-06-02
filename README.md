@@ -1,5 +1,6 @@
 # Overview
-Live demo will showcase an example use case of client fingerprinting to alert users of new (unidentified) logins
+Live demo will showcase an example use case of client fingerprinting to alert users of new (unidentified) logins.
+- Similar to banking systems and Gmail which notify you of new logins
 
 # Services used
 - [Firebase](https://console.firebase.google.com/u/0)
@@ -8,6 +9,7 @@ Live demo will showcase an example use case of client fingerprinting to alert us
     - Lambda Layer
     - Cloudwatch logging
     - Simple Email Service (SES)
+    - Relational Database Service (RDS)
 
 # Local softwares needed
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html)
@@ -17,7 +19,7 @@ Live demo will showcase an example use case of client fingerprinting to alert us
     - [XAMP](https://www.apachefriends.org/download.html)
 - [Node.js](https://nodejs.org/en/download)
 
-# Preqrequisite Setup
+# Prerequisite Setup
 1. Configure AWS credentials and follow prompts
 ```cmd
 aws configure
